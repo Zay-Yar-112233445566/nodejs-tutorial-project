@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const controller = require('../controllers/role');
 
 let rolearray = [
   { id: 1, name: "ADMIN", abbreviation: "AD" },
@@ -8,39 +9,11 @@ let rolearray = [
   { id: 5, name: "DIVISION_HEAD", abbreviation: "DVH" }
 ]
 
-router.get("/", (req, res) => {
-  res.json(rolearray);
-});
-
+ router.get("/", controller.getAll);
+ router.post("/", controller.create);
 router.route("/:id")
-  .get((req, res) => {
-    let role = rolearray.find(role => role.id == req.params.id);
-    if (role) {
-      res.status(200).json(role);
-    } else {
-      res.json({ msg: "No Role Found" });
-    }
-  }
-
-  )
-  .patch((req, res) => {
-    let role = rolearray.find(role => role.id == req.params.id);
-    if (role) {
-      role.name = req.body.name;
-      role.abbreviation = req.body.abbreviation;
-      res.status(200).json(rolearray);
-    } else {
-      res.json({ msg: "No Role Found" });
-    }
-  })
-  .delete((req, res) => {
-    let role = rolearray.find(role => role.id == req.params.id);
-    if (role) {
-      rolearray = rolearray.filter(role => role.id != req.params.id);
-      res.status(200).json(rolearray);
-    } else {
-      res.json({ msg: "No Role Found" });
-    }
-  })
+  .get(controller.fetch)
+  .patch(controller.update)
+  .delete(controller.drop)
 
 module.exports = router;
