@@ -2,14 +2,21 @@ require('dotenv').config();
 const express = require('express'); //importing express server
 const server = express();  //initialize server
 server.use(express.json());
-
+const path = require('path');
 
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
 const mongoose = require('mongoose');
-const fileUpload = require('express-fileupload')
+const fileUpload = require('express-fileupload');
+const {saveFile,saveFiles,deleteFile} = require ('./utils/gallery');
 server.use(fileUpload());
+server.use('/uploads',express.static(path.join(__dirname,'uploads')))
 mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`);
+
+
+server.post('/gallery',saveFiles, async (req, res, next) => {
+    res.status(200).json({ msg: "Images are uploaded!!!!!!!!",images: req.body.saveFiles});
+})
 
 const logged = (req, res, next) => {
     if (1 + 1 == 2) {
@@ -39,17 +46,7 @@ const isAdmin = (req, res, next) => {
 server.get("/users", logged, authenticated, isAdmin);
 server.use("/posts", postRoute);
 
-const fileSave = async (req, res, next) => {
-    let file = req.files.file;
-    let fileName = new Date().valueOf() + "_" + file.name;
-    file.mv(`./uploads/${fileName}`);
-    req.imageName = fileName;
-    next();
-}
 
-server.post('/gallery', fileSave, (req, res, next) => {
-    res.status(200).json({ msg: "File Uploded", fileName: req.imageName});
-})
 
 server.use((err, req, res, next) => {
     if (err.status === undefined) {
