@@ -1,5 +1,5 @@
 
-const DB = require("../dbs/post");
+const DB = require("../models/post");
 const Helper = require("../utils/helper") 
 
 const getAll = async (req, res, next) => {

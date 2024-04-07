@@ -6,6 +6,8 @@ const path = require('path');
 
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
+const categoryRoute = require('./routes/category');
+
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const {saveFile,saveFiles,deleteFile} = require ('./utils/gallery');
@@ -44,9 +46,10 @@ const isAdmin = (req, res, next) => {
 }
 
 server.get("/users", logged, authenticated, isAdmin);
+
+
 server.use("/posts", postRoute);
-
-
+server.use("/categories",categoryRoute);
 
 server.use((err, req, res, next) => {
     if (err.status === undefined) {
