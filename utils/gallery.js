@@ -2,14 +2,14 @@ const fs = require('fs');
 const path = require('path');
 const categoryDB = require("../models/category");
 
-// const saveFile = async (req, res, next) => {
-//     let file = req.files.file;
-//     let fileName = new Date().valueOf() + "_" + file.name;
-//     file.mv(`./uploads/${fileName}`);
-//     req.body["image"] = fileName;
-//     next();
-// }
 const saveFile = async (req, res, next) => {
+    let file = req.files.file;
+    let fileName = new Date().valueOf() + "_" + file.name;
+    file.mv(`./uploads/${fileName}`);
+    req.body["image"] = fileName;
+    next();
+}
+const updateFile = async (req, res, next) => {
     let file = req.files.file;
     let fileName = new Date().valueOf() + "_" + file.name;
     let filePath = path.join('./uploads', fileName);
@@ -54,7 +54,6 @@ const saveFile = async (req, res, next) => {
         });
     } catch (error) {
         console.error('Error:', error);
-        // Handle error if necessary
     }
 }
 
@@ -75,5 +74,6 @@ const deleteFile = async(filename) => {
 module.exports = {
     saveFile,
     saveFiles,
-    deleteFile
+    deleteFile,
+    updateFile
 }

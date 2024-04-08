@@ -39,7 +39,6 @@ const update = async (req, res, next) => {
     }
 }
 
-
 // const drop = async (req, res, next) => {
 //     let result = await DB.findByIdAndDelete(req.params.id);
 //     if(result){

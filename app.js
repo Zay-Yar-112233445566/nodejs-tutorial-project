@@ -15,6 +15,9 @@ server.use(fileUpload());
 server.use('/uploads',express.static(path.join(__dirname,'uploads')))
 mongoose.connect(`mongodb://127.0.0.1:27017/${process.env.DB_NAME}`);
 
+server.use("/users",userRoute);
+server.use("/posts", postRoute);
+server.use("/categories",categoryRoute);
 
 server.post('/gallery',saveFiles, async (req, res, next) => {
     res.status(200).json({ msg: "Images are uploaded!!!!!!!!",images: req.body.saveFiles});
@@ -45,11 +48,7 @@ const isAdmin = (req, res, next) => {
     }
 }
 
-server.get("/users", logged, authenticated, isAdmin);
 
-
-server.use("/posts", postRoute);
-server.use("/categories",categoryRoute);
 
 server.use((err, req, res, next) => {
     if (err.status === undefined) {
