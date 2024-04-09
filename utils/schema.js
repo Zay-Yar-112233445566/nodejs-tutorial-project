@@ -24,6 +24,13 @@ module.exports = {
             user: Joi.optional()
         })
     },
+    TagSchema: {
+        AddTag: Joi.object({
+            image : Joi.string().required(),
+            name: Joi.string().required(),
+            user: Joi.optional()
+        })
+    },
     AllSchema: {
         id: Joi.object({
             id: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
